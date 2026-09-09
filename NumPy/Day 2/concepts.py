@@ -109,8 +109,3 @@ print("a2 :-",a2,"\nCeil :-",np.ceil(a2))
 
 print("------------------")
 
-
-# Day 2
-# changing datatype -> astype
-# array operations -> scalar op (arithmatic, relational), vector op
-# array functions -> min/max/sum/prod, mean/median/std/var, trigonometric fun, log/expo, dot product, round/floor,ceil
