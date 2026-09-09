@@ -238,6 +238,7 @@ arr.dtype
 | `itemsize`           | Bytes occupied by each element |
 | `dtype`              | Data type of elements          |
 
+---
 
 ## Day 2
 
