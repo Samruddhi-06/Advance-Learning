@@ -237,3 +237,191 @@ arr.dtype
 | `size`               | Total number of elements       |
 | `itemsize`           | Bytes occupied by each element |
 | `dtype`              | Data type of elements          |
+
+
+## Day 2
+
+### 1. Changing Data Type — `astype()`
+
+The `astype()` method is used to **convert a NumPy array from one data type to another**.
+
+```python
+arr = np.array([1, 2, 3])
+new_arr = arr.astype(float)
+```
+
+The original array is not changed; `astype()` returns a new array with the specified data type.
+
+---
+
+# 2. Array Operations
+
+NumPy allows mathematical and comparison operations to be performed directly on arrays.
+
+### Scalar Operations
+
+A **scalar operation** applies a single value to every element of the array.
+
+#### Arithmetic Operations
+
+```python
+arr = np.array([1, 2, 3, 4])
+
+arr + 2
+arr - 2
+arr * 2
+arr / 2
+arr ** 2
+```
+
+The operation is performed element-wise.
+
+#### Relational Operations
+
+Relational operators compare each element with a value and return a Boolean array.
+
+```python
+arr > 2
+arr == 2
+arr <= 3
+```
+
+---
+
+### Vector Operations
+
+A **vector operation** performs an operation between corresponding elements of two arrays.
+
+```python
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+a + b
+a * b
+```
+
+The operation is performed element by element.
+
+---
+
+# 3. NumPy Array Functions
+
+NumPy provides many built-in functions for performing calculations on arrays.
+
+### Minimum, Maximum, Sum and Product
+
+```python
+np.min(arr)
+np.max(arr)
+np.sum(arr)
+np.prod(arr)
+```
+
+* `np.min()` → smallest element
+* `np.max()` → largest element
+* `np.sum()` → sum of all elements
+* `np.prod()` → product of all elements
+
+---
+
+### Mean, Median, Standard Deviation and Variance
+
+```python
+np.mean(arr)
+np.median(arr)
+np.std(arr)
+np.var(arr)
+```
+
+* `np.mean()` → arithmetic average
+* `np.median()` → middle value after sorting
+* `np.std()` → standard deviation
+* `np.var()` → variance
+
+These functions are particularly useful when working with **statistical and analytical data**.
+
+---
+
+### Trigonometric Functions
+
+NumPy provides trigonometric functions such as:
+
+```python
+np.sin(arr)
+np.cos(arr)
+np.tan(arr)
+```
+
+These functions operate element-wise on the array.
+
+---
+
+### Logarithmic and Exponential Functions
+
+```python
+np.log(arr)
+np.exp(arr)
+```
+
+* `np.log()` → natural logarithm
+* `np.exp()` → exponential function
+
+NumPy also provides other logarithmic functions such as `np.log10()`.
+
+---
+
+### Dot Product
+
+The `np.dot()` function calculates the **dot product** of two arrays.
+
+```python
+a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+np.dot(a, b)
+```
+
+For 1D arrays, it calculates the sum of the products of corresponding elements.
+
+---
+
+### Rounding Functions
+
+NumPy provides functions for rounding numbers.
+
+```python
+np.round(arr)
+np.floor(arr)
+np.ceil(arr)
+```
+
+* `np.round()` → rounds to the nearest value
+* `np.floor()` → rounds down to the nearest integer
+* `np.ceil()` → rounds up to the nearest integer
+
+---
+
+# Quick Reference
+
+| Function / Method        | Purpose                |
+| ------------------------ | ---------------------- |
+| `astype()`               | Change array data type |
+| `+`, `-`, `*`, `/`, `**` | Arithmetic operations  |
+| `>`, `<`, `==`, `!=`     | Relational operations  |
+| `np.min()`               | Minimum value          |
+| `np.max()`               | Maximum value          |
+| `np.sum()`               | Sum of elements        |
+| `np.prod()`              | Product of elements    |
+| `np.mean()`              | Mean                   |
+| `np.median()`            | Median                 |
+| `np.std()`               | Standard deviation     |
+| `np.var()`               | Variance               |
+| `np.sin()`               | Sine                   |
+| `np.cos()`               | Cosine                 |
+| `np.tan()`               | Tangent                |
+| `np.log()`               | Natural logarithm      |
+| `np.exp()`               | Exponential            |
+| `np.dot()`               | Dot product            |
+| `np.round()`             | Round values           |
+| `np.floor()`             | Round down             |
+| `np.ceil()`              | Round up               |
