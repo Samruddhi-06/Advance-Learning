@@ -426,3 +426,222 @@ np.ceil(arr)
 | `np.round()`             | Round values           |
 | `np.floor()`             | Round down             |
 | `np.ceil()`              | Round up               |
+
+
+---
+
+## Day 3
+
+# 1. Indexing and Slicing
+
+**Indexing** is used to access individual elements of a NumPy array, while **slicing** is used to access a range of elements.
+
+### 1D Array
+
+```python
+arr = np.array([10, 20, 30, 40, 50])
+
+arr[0]       # 10
+arr[-1]      # 50
+arr[1:4]     # [20 30 40]
+```
+
+### 2D Array
+
+For a 2D array, indexing uses **row and column** positions.
+
+```python
+arr = np.array([[1, 2, 3],
+                [4, 5, 6]])
+
+arr[0, 1]       # 2
+arr[1, 2]       # 6
+arr[0, :]       # First row
+arr[:, 1]       # Second column
+```
+
+### 3D Array
+
+For a 3D array, indexing uses **layer, row, and column** positions.
+
+```python
+arr = np.array([[[1, 2],
+                 [3, 4]],
+
+                [[5, 6],
+                 [7, 8]]])
+
+arr[0, 1, 0]    # 3
+```
+
+The general indexing pattern is:
+
+```text
+1D → array[index]
+2D → array[row, column]
+3D → array[layer, row, column]
+```
+
+---
+
+# 2. Iteration
+
+Iteration means accessing the elements of an array one by one.
+
+### Iterating a 1D Array
+
+```python
+for x in arr:
+    print(x)
+```
+
+### Iterating a 2D Array
+
+A normal loop iterates through the rows first.
+
+```python
+for row in arr:
+    print(row)
+```
+
+Nested loops can be used to access individual elements.
+
+```python
+for row in arr:
+    for x in row:
+        print(x)
+```
+
+### Iterating a 3D Array
+
+For higher-dimensional arrays, nested loops can be used for each dimension.
+
+```python
+for layer in arr:
+    for row in layer:
+        for x in row:
+            print(x)
+```
+
+### `np.nditer()`
+
+`np.nditer()` provides an easy way to iterate over **every element**, regardless of the number of dimensions.
+
+```python
+for x in np.nditer(arr):
+    print(x)
+```
+
+---
+
+# 3. Reshaping
+
+Reshaping changes the arrangement or shape of an array without changing its elements.
+
+### `np.transpose()`
+
+`np.transpose()` swaps the axes of an array. For a 2D array, it effectively changes rows into columns and columns into rows.
+
+```python
+arr = np.array([[1, 2, 3],
+                [4, 5, 6]])
+
+np.transpose(arr)
+```
+
+The `T` attribute can also be used:
+
+```python
+arr.T
+```
+
+### `ravel()`
+
+`ravel()` converts a multidimensional array into a **1D array**.
+
+```python
+arr = np.array([[1, 2],
+                [3, 4]])
+
+arr.ravel()
+```
+
+Output:
+
+```text
+[1 2 3 4]
+```
+
+---
+
+# 4. Stacking
+
+Stacking is used to **combine multiple arrays** into a single array.
+
+### `np.hstack()`
+
+`hstack()` stacks arrays **horizontally**, along columns.
+
+```python
+a = np.array([[1, 2],
+              [3, 4]])
+
+b = np.array([[5, 6],
+              [7, 8]])
+
+np.hstack((a, b))
+```
+
+### `np.vstack()`
+
+`vstack()` stacks arrays **vertically**, along rows.
+
+```python
+np.vstack((a, b))
+```
+
+For stacking to work, the arrays must have compatible shapes.
+
+---
+
+# 5. Splitting
+
+Splitting divides one array into multiple smaller arrays.
+
+### `np.hsplit()`
+
+`hsplit()` splits an array **horizontally**, dividing it along the columns.
+
+```python
+arr = np.array([[1, 2, 3, 4],
+                [5, 6, 7, 8]])
+
+np.hsplit(arr, 2)
+```
+
+### `np.vsplit()`
+
+`vsplit()` splits an array **vertically**, dividing it along the rows.
+
+```python
+np.vsplit(arr, 2)
+```
+
+The array must have a compatible number of rows or columns for the requested split.
+
+---
+
+# Quick Reference
+
+| Function / Concept | Purpose                        |
+| ------------------ | ------------------------------ |
+| `arr[index]`       | Access elements using indexing |
+| `arr[start:stop]`  | Slice an array                 |
+| `np.nditer()`      | Iterate through every element  |
+| `np.transpose()`   | Transpose / rearrange axes     |
+| `arr.T`            | Shortcut for transpose         |
+| `arr.ravel()`      | Flatten array into 1D          |
+| `np.hstack()`      | Stack arrays horizontally      |
+| `np.vstack()`      | Stack arrays vertically        |
+| `np.hsplit()`      | Split array horizontally       |
+| `np.vsplit()`      | Split array vertically         |
