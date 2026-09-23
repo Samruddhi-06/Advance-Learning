@@ -36,6 +36,9 @@ print("Total subjects =",no_of_subjects)
 shape = np.shape(marks)
 print("Shape of dataset =",shape)
 
+print()
+print("-------------------------------------------------")
+
 # Total marks of every student
 a1 = marks[0]
 s1 = np.sum(a1)
@@ -55,6 +58,9 @@ print("Total marks of student5 =",s5)
 
 total_marks = [s1,s2,s3,s4,s5]
 
+print()
+print("-------------------------------------------------")
+
 # Average marks of every student
 avg1 = np.mean(a1)
 avg2 = np.mean(a2)
@@ -69,13 +75,19 @@ print("Average marks of student5 =",avg5)
 
 total_avg = [avg1,avg2,avg3,avg4,avg5]
 
-# Highest mark
+print()
+print("-------------------------------------------------")
+
+# Highest total mark by a student
 highest_marks = np.max(total_marks)
 print("Highest marks =",highest_marks)
 
-# Lowest marks
+# Lowest total marks by a student
 lowest_marks = np.min(total_marks)
 print("Lowest marks =",lowest_marks)
+
+print()
+print("-------------------------------------------------")
 
 # Students scoring above a particular average
 threshold = 75.0
@@ -83,7 +95,92 @@ avg_marks = np.array(total_avg)
 above_avg = students[avg_marks > threshold]
 print("Students scoring above average marks =",above_avg)
 
+print()
+print("-------------------------------------------------")
+
 # Average marks in each subject
 b1 = marks[:,0]
 sub1_avg = np.mean(b1)
 print("Average marks of subject 1 =",sub1_avg)
+b2 = marks[:,1]
+sub2_avg = np.mean(b2)
+print("Average marks of subject 2 =",sub2_avg)
+b3 = marks[:,2]
+sub3_avg = np.mean(b3)
+print("Average marks of subject 3 =",sub3_avg)
+b4 = marks[:,3]
+sub4_avg = np.mean(b4)
+print("Average marks of subject 4 =",sub4_avg)
+b5 = marks[:,4]
+sub5_avg = np.mean(b5)
+print("Average marks of subject 5 =",sub5_avg)
+
+sub_avg = np.array([sub1_avg,sub2_avg,sub3_avg,sub4_avg,sub5_avg])
+
+print()
+print("-------------------------------------------------")
+
+# Highest mark in each subject
+
+print("Highest marks in subject 1 =",np.max(b1))
+print("Highest marks in subject 2 =",np.max(b2))
+print("Highest marks in subject 3 =",np.max(b3))
+print("Highest marks in subject 4 =",np.max(b4))
+print("Highest marks in subject 5 =",np.max(b5))
+
+print()
+print("-------------------------------------------------")
+
+# Lowest mark in each subject
+
+print("Lowest marks in subject 1 =", np.min(b1))
+print("Lowest marks in subject 2 =", np.min(b2))
+print("Lowest marks in subject 3 =", np.min(b3))
+print("Lowest marks in subject 4 =", np.min(b4))
+print("Lowest marks in subject 5 =", np.min(b5))
+
+print()
+print("-------------------------------------------------")
+
+# Subject with the highest average
+
+print(f"Highest average among 5 subject is {np.max(sub_avg)} of student {np.argmax(sub_avg)+1} subject")
+
+print()
+print("-------------------------------------------------")
+
+# Overall class average
+
+print("Overall class average =", np.mean(marks))
+
+print()
+print("-------------------------------------------------")
+
+# Highest-performing student
+
+print(f"Highest performing student is student {np.argmax(total_marks)+1} with total marks {np.max(total_marks)}")
+
+# Lowest-performing student
+
+print(f"Lowest performing student is student {np.argmin(total_marks)+1} with total marks {np.min(total_marks)}")
+
+print()
+print("-------------------------------------------------")
+
+# Number of students who passed
+
+passing = 75
+
+passed = students[avg_marks >= passing]
+print("Students passed =",passed)
+print("Number of students passed =",np.size(passed))
+
+# Number of students who failed
+
+failed = students[avg_marks < passing]
+print("Students failed =",failed)
+print("Number of students failed =",np.size(failed))
+
+
+print()
+print("-------------------------------------------------")
