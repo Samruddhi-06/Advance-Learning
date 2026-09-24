@@ -645,3 +645,308 @@ The array must have a compatible number of rows or columns for the requested spl
 | `np.vstack()`      | Stack arrays vertically        |
 | `np.hsplit()`      | Split array horizontally       |
 | `np.vsplit()`      | Split array vertically         |
+
+
+---
+
+## Day 4 — Advanced Concepts
+
+# 1. Broadcasting
+
+**Broadcasting** is NumPy's mechanism for performing operations on arrays with different shapes, without explicitly reshaping or copying the smaller array.
+
+For example:
+
+```python
+arr = np.array([1, 2, 3])
+arr + 10
+```
+
+Output:
+
+```text
+[11 12 13]
+```
+
+The scalar `10` is effectively applied to every element.
+
+Broadcasting also works between compatible arrays:
+
+```python
+a = np.array([[1, 2, 3],
+              [4, 5, 6]])
+
+b = np.array([10, 20, 30])
+
+a + b
+```
+
+Here, `b` is broadcast across each row of `a`.
+
+### Broadcasting Rules
+
+When NumPy compares two shapes, it starts from the **trailing (rightmost) dimensions**.
+
+Two dimensions are compatible when:
+
+1. They are equal, or
+2. One of them is `1`.
+
+For example:
+
+```text
+(2, 3)
+(3,)
+```
+
+These shapes are compatible because the `(3,)` array can be broadcast across the rows.
+
+However:
+
+```text
+(2, 3)
+(2,)
+```
+
+is not compatible because the dimensions do not satisfy the broadcasting rules.
+
+Broadcasting is important because it allows operations between arrays of compatible shapes without manually duplicating data.
+
+---
+
+# 2. Working with Mathematical Formulas
+
+NumPy makes it convenient to implement mathematical formulas using arrays.
+
+## Sigmoid Function
+
+The **sigmoid function** maps a value to a range between 0 and 1.
+
+Formula:
+
+```text
+σ(x) = 1 / (1 + e⁻ˣ)
+```
+
+In NumPy:
+
+```python
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+```
+
+The sigmoid function is commonly encountered in **machine learning**, particularly in binary classification.
+
+---
+
+## Mean Squared Error (MSE)
+
+Mean Squared Error measures the average squared difference between actual and predicted values.
+
+Formula:
+
+```text
+MSE = (1/n) Σ(y_actual - y_predicted)²
+```
+
+Using NumPy:
+
+```python
+def mse(y_actual, y_predicted):
+    return np.mean((y_actual - y_predicted) ** 2)
+```
+
+A smaller MSE means the predictions have smaller squared errors relative to the actual values.
+
+---
+
+## Binary Cross Entropy (BCE)
+
+Binary Cross Entropy is a loss function commonly used for **binary classification**.
+
+Formula:
+
+```text
+BCE = -1/n Σ[y log(p) + (1-y) log(1-p)]
+```
+
+where:
+
+* `y` → actual binary value
+* `p` → predicted probability
+* `n` → number of observations
+
+A NumPy implementation can be written as:
+
+```python
+def binary_cross_entropy(y, p):
+    return -np.mean(
+        y * np.log(p) + (1 - y) * np.log(1 - p)
+    )
+```
+
+In practical implementations, predicted probabilities are usually kept away from exactly `0` and `1` to avoid taking `log(0)`.
+
+---
+
+# 3. Working with Missing Values
+
+NumPy can represent missing numerical values using `np.nan` (**Not a Number**).
+
+```python
+arr = np.array([10, 20, np.nan, 40])
+```
+
+### Detecting Missing Values
+
+```python
+np.isnan(arr)
+```
+
+This returns a Boolean array indicating which elements are `NaN`.
+
+### Counting Missing Values
+
+```python
+np.sum(np.isnan(arr))
+```
+
+### Ignoring Missing Values in Calculations
+
+Regular aggregation functions such as `np.mean()` return `nan` when the array contains a `NaN`.
+
+```python
+np.mean(arr)
+```
+
+NumPy provides `nan`-aware functions to ignore missing values:
+
+```python
+np.nanmean(arr)
+np.nansum(arr)
+np.nanmin(arr)
+np.nanmax(arr)
+```
+
+For example:
+
+```python
+np.nanmean(arr)
+```
+
+calculates the mean while ignoring `NaN` values.
+
+---
+
+# 4. Graph Plotting
+
+NumPy can be combined with **Matplotlib** to generate mathematical plots.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+The general process is:
+
+```python
+x = np.linspace(-10, 10, 100)
+
+y = ...
+plt.plot(x, y)
+plt.show()
+```
+
+The `x` values provide the input, while the calculated `y` values determine the curve.
+
+---
+
+## `y = x`
+
+```python
+x = np.linspace(-10, 10, 100)
+y = x
+
+plt.plot(x, y)
+plt.show()
+```
+
+This produces a straight line.
+
+---
+
+## `y = x²`
+
+```python
+x = np.linspace(-10, 10, 100)
+y = x ** 2
+
+plt.plot(x, y)
+plt.show()
+```
+
+This produces a **parabolic curve**.
+
+---
+
+## `y = sin(x)`
+
+```python
+x = np.linspace(-10, 10, 100)
+y = np.sin(x)
+
+plt.plot(x, y)
+plt.show()
+```
+
+`np.sin()` uses **radians** for its input.
+
+---
+
+## `y = x log(x)`
+
+For the natural logarithm:
+
+```python
+x = np.linspace(0.1, 10, 100)
+y = x * np.log(x)
+
+plt.plot(x, y)
+plt.show()
+```
+
+The values start above zero because `log(x)` is defined for positive real `x`.
+
+---
+
+## Sigmoid Curve
+
+```python
+x = np.linspace(-10, 10, 100)
+y = 1 / (1 + np.exp(-x))
+
+plt.plot(x, y)
+plt.show()
+```
+
+This produces the characteristic **S-shaped sigmoid curve**, with values approaching 0 for large negative inputs and 1 for large positive inputs.
+
+---
+
+# Quick Reference
+
+| Concept / Function | Purpose                                                       |
+| ------------------ | ------------------------------------------------------------- |
+| Broadcasting       | Perform operations on compatible arrays with different shapes |
+| `np.exp()`         | Exponential function                                          |
+| `np.mean()`        | Calculate mean                                                |
+| `np.isnan()`       | Detect `NaN` values                                           |
+| `np.nanmean()`     | Mean while ignoring `NaN`                                     |
+| `np.nansum()`      | Sum while ignoring `NaN`                                      |
+| `np.nanmin()`      | Minimum while ignoring `NaN`                                  |
+| `np.nanmax()`      | Maximum while ignoring `NaN`                                  |
+| `plt.plot()`       | Plot a graph                                                  |
+| `plt.show()`       | Display the graph                                             |
+| Sigmoid            | Maps values toward the range 0–1                              |
+| MSE                | Measures mean squared prediction error                        |
+| BCE                | Measures binary classification loss                           |
