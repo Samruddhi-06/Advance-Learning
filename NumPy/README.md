@@ -950,3 +950,351 @@ This produces the characteristic **S-shaped sigmoid curve**, with values approac
 | Sigmoid            | Maps values toward the range 0–1                              |
 | MSE                | Measures mean squared prediction error                        |
 | BCE                | Measures binary classification loss                           |
+
+---
+
+## Day 6 — Useful NumPy Functions
+
+NumPy provides many functions for **sorting, searching, manipulating, aggregating, comparing, and analyzing arrays**.
+
+# 1. Useful NumPy Functions
+
+### `np.sort()`
+
+Returns a sorted copy of an array.
+
+```python
+arr = np.array([4, 1, 3, 2])
+np.sort(arr)
+```
+
+---
+
+### `np.append()`
+
+Appends values to the end of an array and returns a new array.
+
+```python
+arr = np.array([1, 2, 3])
+np.append(arr, 4)
+```
+
+---
+
+### `np.concatenate()`
+
+Joins two or more arrays along an existing axis.
+
+```python
+a = np.array([1, 2])
+b = np.array([3, 4])
+
+np.concatenate((a, b))
+```
+
+Unlike `np.append()`, `concatenate()` is particularly useful when combining multiple arrays with compatible shapes.
+
+---
+
+### `np.unique()`
+
+Returns the **unique elements** of an array, removing duplicates.
+
+```python
+arr = np.array([1, 2, 2, 3, 3, 3])
+np.unique(arr)
+```
+
+---
+
+### `np.expand_dims()`
+
+Adds a new dimension to an array at the specified axis.
+
+```python
+arr = np.array([1, 2, 3])
+
+np.expand_dims(arr, axis=0)
+```
+
+This is useful when you need to change the dimensionality of an array while preserving its data.
+
+---
+
+### `np.where()`
+
+Returns the indices where a condition is `True`.
+
+```python
+arr = np.array([10, 20, 30, 40])
+
+np.where(arr > 20)
+```
+
+It can also be used as a conditional expression:
+
+```python
+np.where(arr > 20, 1, 0)
+```
+
+---
+
+### `np.argmax()`
+
+Returns the **index of the maximum value**.
+
+```python
+arr = np.array([10, 50, 30])
+np.argmax(arr)
+```
+
+### `np.argmin()`
+
+Returns the **index of the minimum value**.
+
+```python
+np.argmin(arr)
+```
+
+---
+
+### `np.cumsum()`
+
+Returns the **cumulative sum** of elements.
+
+```python
+arr = np.array([1, 2, 3, 4])
+np.cumsum(arr)
+```
+
+Output:
+
+```text
+[1 3 6 10]
+```
+
+### `np.cumprod()`
+
+Returns the **cumulative product** of elements.
+
+```python
+np.cumprod(arr)
+```
+
+---
+
+### `np.percentile()`
+
+Calculates the value below which a given percentage of observations falls.
+
+```python
+arr = np.array([10, 20, 30, 40, 50])
+
+np.percentile(arr, 50)
+```
+
+The 50th percentile corresponds to the median.
+
+Percentiles are commonly used in **statistical analysis and exploratory data analysis**.
+
+---
+
+### `np.histogram()`
+
+Computes the frequency distribution of data within specified bins.
+
+```python
+arr = np.array([1, 2, 2, 3, 4, 5])
+
+np.histogram(arr)
+```
+
+It returns:
+
+* The counts of values in each bin
+* The boundaries of the bins
+
+---
+
+### `np.corrcoef()`
+
+Calculates the **correlation coefficient matrix**.
+
+```python
+x = np.array([1, 2, 3, 4])
+y = np.array([2, 4, 6, 8])
+
+np.corrcoef(x, y)
+```
+
+Correlation coefficients describe the **linear relationship** between variables, with values ranging from `-1` to `1`.
+
+---
+
+### `np.isin()`
+
+Checks whether elements of an array are present in another set of values.
+
+```python
+arr = np.array([1, 2, 3, 4])
+
+np.isin(arr, [2, 4])
+```
+
+It returns a Boolean array.
+
+---
+
+### `np.flip()`
+
+Reverses the order of elements in an array.
+
+```python
+arr = np.array([1, 2, 3, 4])
+
+np.flip(arr)
+```
+
+---
+
+### `np.put()`
+
+Replaces elements at specified indices with given values.
+
+```python
+arr = np.array([1, 2, 3, 4])
+
+np.put(arr, [0, 2], [10, 30])
+```
+
+`np.put()` modifies the original array.
+
+---
+
+### `np.delete()`
+
+Returns a new array with specified elements or indices removed.
+
+```python
+arr = np.array([1, 2, 3, 4])
+
+np.delete(arr, 1)
+```
+
+The original array is not modified.
+
+---
+
+### `np.clip()`
+
+Limits array values to a specified minimum and maximum range.
+
+```python
+arr = np.array([1, 5, 10, 15, 20])
+
+np.clip(arr, 5, 15)
+```
+
+Values below `5` become `5`, and values above `15` become `15`.
+
+---
+
+# 2. Set Functions
+
+NumPy provides functions for performing **set operations on arrays**.
+
+These functions generally work with **1D arrays** and return sorted unique values.
+
+### `np.union1d()`
+
+Returns the unique values present in either of the two arrays.
+
+```python
+a = np.array([1, 2, 3])
+b = np.array([3, 4, 5])
+
+np.union1d(a, b)
+```
+
+Output:
+
+```text
+[1 2 3 4 5]
+```
+
+---
+
+### `np.intersect1d()`
+
+Returns the unique values that are present in **both arrays**.
+
+```python
+np.intersect1d(a, b)
+```
+
+Output:
+
+```text
+[3]
+```
+
+---
+
+### `np.setdiff1d()`
+
+Returns the values that are present in the first array but **not in the second**.
+
+```python
+np.setdiff1d(a, b)
+```
+
+Output:
+
+```text
+[1 2]
+```
+
+---
+
+### `np.setxor1d()`
+
+Returns the unique values that are present in **either array, but not in both**.
+
+```python
+np.setxor1d(a, b)
+```
+
+Output:
+
+```text
+[1 2 4 5]
+```
+
+---
+
+# Quick Reference
+
+| Function           | Purpose                              |
+| ------------------ | ------------------------------------ |
+| `np.sort()`        | Sort an array                        |
+| `np.append()`      | Append values                        |
+| `np.concatenate()` | Join arrays                          |
+| `np.unique()`      | Find unique values                   |
+| `np.expand_dims()` | Add a dimension                      |
+| `np.where()`       | Find elements satisfying a condition |
+| `np.argmax()`      | Index of maximum value               |
+| `np.argmin()`      | Index of minimum value               |
+| `np.cumsum()`      | Cumulative sum                       |
+| `np.cumprod()`     | Cumulative product                   |
+| `np.percentile()`  | Calculate percentile                 |
+| `np.histogram()`   | Calculate frequency distribution     |
+| `np.corrcoef()`    | Calculate correlation coefficients   |
+| `np.isin()`        | Check membership                     |
+| `np.flip()`        | Reverse an array                     |
+| `np.put()`         | Replace values at indices            |
+| `np.delete()`      | Delete elements                      |
+| `np.clip()`        | Limit values to a range              |
+| `np.union1d()`     | Union of two arrays                  |
+| `np.intersect1d()` | Intersection of two arrays           |
+| `np.setdiff1d()`   | Difference between arrays            |
+| `np.setxor1d()`    | Symmetric difference                 |
