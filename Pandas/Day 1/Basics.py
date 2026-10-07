@@ -35,3 +35,26 @@ marks = {
     'Maths' : 97
 }
 print(pd.Series(marks, name='marks of samruddhi'))
+
+
+# Serirs attributes
+
+marks_series = pd.Series(marks, name='Marks of student 1')
+
+# size
+print(marks_series.size)
+
+# dtype
+print(marks_series.dtype)
+
+# name
+print(marks_series.name)
+
+# is_unique
+print(marks_series.is_unique)
+
+# index
+print(marks_series.index)
+
+# values
+print(marks_series.values)
