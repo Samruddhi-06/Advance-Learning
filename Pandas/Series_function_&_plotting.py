@@ -46,7 +46,7 @@ print(marks_series)
 
 # fancy indexing
 
-x[[0,3,4]] = [0,0,0]
+x[[0,3,4]] = [0,100,0]
 print(x)
 
 # series with python functionalities
