@@ -2,18 +2,18 @@ import pandas as pd
 
 # Series using read_csv
 
-subs = pd.read_csv('Pandas/Day 2/subs.csv').squeeze()
+subs = pd.read_csv('Pandas/subs.csv').squeeze()
 print(subs)
 print(type(subs))
 print()
 
 # Series with 2 cols
 
-vk: pd.Series = pd.read_csv('Pandas/Day 2/kohli_ipl.csv', index_col='match_no').squeeze()
+vk = pd.read_csv('Pandaskohli_ipl.csv', index_col='match_no').squeeze()
 print(vk)
 print()  
 
-bwood = pd.read_csv('Pandas/Day 2/bollywood.csv', index_col='movie').squeeze()
+bwood = pd.read_csv('Pandas/bollywood.csv', index_col='movie').squeeze()
 print(bwood)
 print(type(bwood))
 print()

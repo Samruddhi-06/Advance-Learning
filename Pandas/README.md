@@ -199,3 +199,226 @@ bwood.sort_index()
 
 ---
 
+# Day 3 — Series Indexing, Editing & Boolean Indexing
+
+## 1. Series Indexing
+
+Accessing values from a Series using its position or label.
+
+### Integer Indexing
+
+```python
+s[0]
+s[2]
+```
+
+### Negative Indexing
+
+Access values from the end.
+
+```python
+s[-1]
+```
+
+### Slicing
+
+```python
+s[1:4]
+```
+
+### Negative Slicing
+
+```python
+s[-3:]
+```
+
+### Fancy Indexing
+
+Access multiple specific positions.
+
+```python
+s[[0, 2, 4]]
+```
+
+### Label Indexing
+
+Access values using their index labels.
+
+```python
+s["Math"]
+```
+
+---
+
+## 2. Editing a Series
+
+### Using Indexing
+
+```python
+s[0] = 100
+```
+
+### Editing Multiple Items
+
+```python
+s[0:3] = 100
+```
+
+### Fancy Indexing
+
+```python
+s[[0, 2]] = 100
+```
+
+### Using Index Labels
+
+```python
+s["Math"] = 95
+```
+
+If the specified label does not exist, assigning it can create a **new index entry**.
+
+---
+
+## 3. Series with Python Functions
+
+Common Python functionality that works with Series:
+
+```python
+len(s)
+type(s)
+dir(s)
+
+sorted(s)
+min(s)
+max(s)
+
+list(s)
+tuple(s)
+```
+
+### Membership
+
+```python
+10 in s
+```
+
+Checks the **index** by default.
+
+### Looping
+
+```python
+for value in s:
+    print(value)
+```
+
+### Arithmetic Operators
+
+Operations can be performed directly on Series:
+
+```python
+s + 10
+s * 2
+s / 2
+```
+
+### Relational Operators
+
+```python
+s > 50
+s == 100
+s < 50
+```
+
+These return a Boolean Series.
+
+---
+
+## 4. Boolean Indexing
+
+Boolean conditions can be used to filter a Series.
+
+Example: finding Kohli's scores of `50` and above:
+
+```python
+vk[vk >= 50]
+```
+
+Finding the number of scores equal to `50` or `100`:
+
+```python
+(vk == 50).sum()
+(vk == 100).sum()
+```
+
+Finding the number of ducks:
+
+```python
+(vk == 0).sum()
+```
+
+### Important Pattern
+
+```python
+s[condition]
+```
+
+→ filters the Series based on the condition.
+
+---
+
+## 5. Plotting Series
+
+A Series can be visualized using:
+
+### Line Plot
+
+```python
+vk.plot(kind="line")
+```
+
+### Bar Plot
+
+```python
+vk.plot(kind="bar")
+```
+
+### Pie Chart
+
+```python
+vk.plot(kind="pie")
+```
+
+These can be used to visualize patterns in Kohli's IPL match scores.
+
+---
+
+## Dataset Used
+
+**Kohli IPL dataset** containing:
+
+* Match number
+* Runs scored by Virat Kohli in each IPL match
+
+Used for practicing indexing, editing, filtering and visualization.
+
+---
+
+## Quick Revision
+
+| Concept           | Key Point                          |
+| ----------------- | ---------------------------------- |
+| Integer indexing  | Access by position                 |
+| Negative indexing | Access from the end                |
+| Slicing           | Access a range                     |
+| Fancy indexing    | Access multiple selected positions |
+| Label indexing    | Access using index labels          |
+| Boolean indexing  | Filter using conditions            |
+| `len()`           | Number of elements                 |
+| `sorted()`        | Sorted values                      |
+| `min()` / `max()` | Minimum / maximum                  |
+| Arithmetic        | Perform calculations on Series     |
+| Relational        | Create Boolean conditions          |
+| `plot()`          | Visualize Series                   |
+
+---
