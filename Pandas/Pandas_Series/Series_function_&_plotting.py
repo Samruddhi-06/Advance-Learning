@@ -10,12 +10,12 @@ print(x[4])
 print(x[2:5])
 
 # fancy indexing
-vk: pd.Series = pd.read_csv('Pandas/kohli_ipl.csv', index_col='match_no').squeeze()
+vk: pd.Series = pd.read_csv('Pandas/Pandas_Series/kohli_ipl.csv', index_col='match_no').squeeze()
 
 print(vk[[1,3,8]])
 
 # indexing with label
-bwood = pd.read_csv('Pandas/bollywood.csv', index_col='movie').squeeze()
+bwood = pd.read_csv('Pandas/Pandas_Series/bollywood.csv', index_col='movie').squeeze()
 print(bwood['Why Cheat India'])
 
 # Editing series

@@ -5,7 +5,7 @@ import numpy as np
 
 # astype
 
-vk = pd.read_csv('Pandas/kohli_ipl.csv', index_col='match_no').squeeze()
+vk = pd.read_csv('Pandas/Pandas_Series/kohli_ipl.csv', index_col='match_no').squeeze()
 
 print(vk.astype('int16'))
 
@@ -16,7 +16,7 @@ print(vk[vk.between(49,69)].size)
 
 # clip
 
-subs = pd.read_csv('Pandas/subs.csv').squeeze()
+subs = pd.read_csv('Pandas/Pandas_Series/subs.csv').squeeze()
 print(subs.clip(100,200))
 
 # drop_duplicates
@@ -47,7 +47,6 @@ print(vk[vk.isin([49,99])])
 
 # apply
 
-bwood = pd.read_csv('Pandas/bollywood.csv').squeeze()
 
 print(vk.apply(lambda x: 'good day' if x > vk.mean() else 'bad day'))
 
