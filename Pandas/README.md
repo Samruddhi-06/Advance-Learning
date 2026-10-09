@@ -422,3 +422,134 @@ Used for practicing indexing, editing, filtering and visualization.
 | `plot()`          | Visualize Series                   |
 
 ---
+
+## Day 4 — Important Series Methods
+
+### 1. `astype()`
+
+Converts Series values to a specified data type.
+
+```python
+vk.astype('int16')
+```
+
+### 2. `between()`
+
+Checks whether values fall within a specified range (inclusive by default).
+
+```python
+vk[vk.between(49, 69)]
+vk[vk.between(49, 69)].size
+```
+
+### 3. `clip()`
+
+Limits values to a specified minimum and maximum. Values outside the range are replaced by the nearest boundary.
+
+```python
+subs.clip(100, 200)
+```
+
+### 4. `drop_duplicates()`
+
+Removes duplicate values from a Series.
+
+```python
+temp.drop_duplicates()
+temp.drop_duplicates(keep='last')
+```
+
+* Default: keeps the first occurrence.
+* `keep='last'`: keeps the last occurrence.
+
+### 5. `duplicated()`
+
+Returns a Boolean Series indicating duplicate values.
+
+```python
+temp.duplicated()
+temp.duplicated().sum()
+```
+
+By default, the first occurrence is marked `False`, and subsequent duplicates are marked `True`.
+
+### 6. `isnull()`
+
+Identifies missing values (`NaN`).
+
+```python
+temp.isnull()
+temp.isnull().sum()
+```
+
+### 7. `dropna()`
+
+Removes missing values from a Series.
+
+```python
+temp.dropna()
+```
+
+### 8. `fillna()`
+
+Replaces missing values with a specified value.
+
+```python
+temp.fillna(temp.mean())
+```
+
+Here, missing values are replaced with the Series mean, calculated while ignoring missing values.
+
+### 9. `isin()`
+
+Checks whether each value belongs to a specified collection.
+
+```python
+vk[vk.isin([49, 99])]
+```
+
+Returns Kohli's scores that are either `49` or `99`.
+
+### 10. `apply()`
+
+Applies a function to each element of a Series.
+
+```python
+vk.apply(lambda x: 'good day' if x > vk.mean() else 'bad day')
+```
+
+Classifies each score as `good day` or `bad day` based on whether it is above the mean.
+
+### 11. `copy()`
+
+Creates a separate copy of a Series.
+
+```python
+new = vk.head().copy()
+new[1] = 100
+
+print(new)
+print(vk)
+```
+
+Changes to `new` do not affect the original Series `vk`.
+
+---
+
+### Quick Revision
+
+| Method              | Purpose                                  |
+| ------------------- | ---------------------------------------- |
+| `astype()`          | Convert data type                        |
+| `between()`         | Check whether values fall within a range |
+| `clip()`            | Limit values to a range                  |
+| `drop_duplicates()` | Remove duplicate values                  |
+| `duplicated()`      | Identify duplicate values                |
+| `isnull()`          | Detect missing values                    |
+| `dropna()`          | Remove missing values                    |
+| `fillna()`          | Replace missing values                   |
+| `isin()`            | Check membership in a collection         |
+| `apply()`           | Apply a function to each element         |
+| `copy()`            | Create an independent copy               |
+
+---
