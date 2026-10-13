@@ -1,190 +1,231 @@
-# Pandas DataFrame — Day 1
+## Day 5 — Pandas DataFrame
 
-## 1. Creating DataFrames
+### 1. What is a DataFrame?
 
-A **DataFrame** is a 2-dimensional, tabular data structure with rows and columns.
+A **DataFrame** is a two-dimensional tabular data structure containing rows and columns. It can store different data types in different columns.
 
-### Using a 2D List
+### 2. Creating DataFrames
 
+**Using a 2D list**
 ```python
-student_data = [
-    [100, 80, 10],
-    [90, 70, 7],
-    [120, 100, 14],
-    [80, 50, 2]
-]
-
 students = pd.DataFrame(
-    student_data,
+    [[100, 80, 10], [90, 70, 7]],
     columns=['iq', 'marks', 'package']
 )
 ```
 
-### Using a Dictionary
-
+**Using a dictionary**
 ```python
-student = pd.DataFrame(student_dict)
+student = pd.DataFrame({
+    'name': ['Ram', 'Shyam'],
+    'marks': [80, 70]
+})
+```
+
+**Using CSV**
+```python
+movies = pd.read_csv('movies.csv')
+```
+
+Set a column as the index:
+```python
 student.set_index('name', inplace=True)
 ```
 
-Dictionary keys become column names, and lists provide column values.
-
-### Using CSV Files
-
-```python
-movies = pd.read_csv('Pandas/Pandas_DataFrame/movies.csv')
-ipl = pd.read_csv('Pandas/Pandas_DataFrame/ipl-matches.csv')
-```
-
-`read_csv()` loads CSV data into a DataFrame.
-
----
-
-## 2. DataFrame Attributes
+### 3. DataFrame Attributes
 
 | Attribute | Purpose |
 |---|---|
-| `df.shape` | Returns number of rows and columns |
-| `df.dtypes` | Shows the data type of each column |
-| `df.index` | Returns row index labels |
-| `df.columns` | Returns column names |
-| `df.values` | Returns the underlying data as an array |
+| `df.shape` | Number of rows and columns |
+| `df.dtypes` | Data type of each column |
+| `df.index` | Row index labels |
+| `df.columns` | Column names |
+| `df.values` | Underlying data as an array |
 
-Example:
-
-```python
-ipl.shape
-ipl.dtypes
-ipl.index
-ipl.columns
-ipl.values
-```
-
----
-
-## 3. DataFrame Methods
+### 4. Important DataFrame Methods
 
 | Method | Purpose |
 |---|---|
-| `head()` | Returns first 5 rows by default |
-| `tail()` | Returns last 5 rows by default |
-| `sample(n)` | Returns `n` random rows |
-| `info()` | Shows column types, non-null counts and memory usage |
-| `describe()` | Generates descriptive statistics for numeric columns by default |
-| `isnull().sum()` | Counts missing values in each column |
-| `duplicated().sum()` | Counts duplicate rows |
-| `rename()` | Renames row or column labels |
+| `df.head()` | First 5 rows |
+| `df.tail()` | Last 5 rows |
+| `df.sample(5)` | 5 random rows |
+| `df.info()` | Column types, non-null counts and memory usage |
+| `df.describe()` | Summary statistics for numeric columns by default |
+| `df.isnull().sum()` | Missing values in each column |
+| `df.duplicated().sum()` | Number of duplicate rows |
+| `df.rename()` | Rename rows or columns |
+| `df.dropna()` | Remove missing data |
 
-Examples:
+Use `inplace=True` with supported methods when you want to modify the original DataFrame.
+
+### 5. Mathematical Methods
 
 ```python
-ipl.head(2)
-movies.tail(2)
-movies.sample(5)
+df.sum()
+df.mean()
+df.median()
+df.max()
+df.min()
+df.std()
+df.var()
+```
 
-ipl.info()
-movies.describe()
+These calculate summary statistics, generally column-wise by default.
 
-movies.isnull().sum()
-movies.duplicated().sum()
+### 6. Selecting Columns
 
-students.rename(
-    columns={'marks': 'percent', 'package': 'lpa'}
+**Single column** — returns a Series:
+```python
+movies['title_x']
+```
+
+**Multiple columns** — returns a DataFrame:
+```python
+ipl[['Team1', 'Team2', 'WinningTeam']]
+```
+
+### 7. Selecting Rows: `iloc` and `loc`
+
+**`iloc` — position-based selection**
+```python
+movies.iloc[0]          # First row
+movies.iloc[0:5]        # First five rows
+movies.iloc[0:3, 0:3]   # First 3 rows and columns
+movies.iloc[[0, 2, 3]]  # Selected row positions
+```
+
+**`loc` — label-based selection**
+```python
+student.loc['Ram']
+student.loc[['Ram', 'Shyam']]
+```
+
+Label-based slicing includes the ending label when it exists. Integer slicing with `iloc` excludes the ending position.
+
+### 8. Filtering DataFrames
+
+Filter rows using conditions.
+
+**Find final match winners**
+```python
+ipl[ipl['MatchNumber'] == 'Final'][['Season', 'WinningTeam']]
+```
+
+**Count Super Over matches**
+```python
+ipl[ipl['SuperOver'] == 'Y'].shape[0]
+```
+
+**CSK wins in Kolkata**
+```python
+ipl[
+    (ipl['City'] == 'Kolkata') &
+    (ipl['WinningTeam'] == 'Chennai Super Kings')
+].shape[0]
+```
+
+**Percentage of matches where toss winner also won**
+```python
+(ipl[ipl['TossWinner'] == ipl['WinningTeam']].shape[0]
+ / ipl.shape[0]) * 100
+```
+
+**Movies with rating above 8 and more than 10,000 votes**
+```python
+movies[
+    (movies['imdb_rating'] > 8) &
+    (movies['imdb_votes'] > 10000)
+]
+```
+
+For multiple conditions:
+- `&` means AND
+- `|` means OR
+- Put each condition inside parentheses.
+
+### 9. Filtering Text Data
+
+Find Action movies with a rating above 7.5:
+
+```python
+mask1 = movies['genres'].str.split('|').apply(
+    lambda x: 'Action' in x
+)
+mask2 = movies['imdb_rating'] > 7.5
+
+movies[mask1 & mask2]
+```
+
+### 10. Writing Functions with DataFrames
+
+A function can filter data and return useful results.
+
+Example: head-to-head IPL records.
+
+```python
+def track_records(ipl, team1, team2):
+    conditions = (
+        ((ipl['Team1'] == team1) & (ipl['Team2'] == team2)) |
+        ((ipl['Team1'] == team2) & (ipl['Team2'] == team1))
+    )
+
+    matches = ipl[conditions]
+
+    return {
+        'Total Matches': matches.shape[0],
+        f'{team1} Wins': (
+            matches[matches['WinningTeam'] == team1].shape[0]
+        ),
+        f'{team2} Wins': (
+            matches[matches['WinningTeam'] == team2].shape[0]
+        )
+    }
+```
+
+### 11. Adding New Columns
+
+**Add a constant column**
+```python
+movies['Country'] = 'India'
+```
+
+**Extract the lead actor**
+```python
+movies = movies.dropna(subset=['actors'])
+
+movies['LeadActor'] = movies['actors'].str.split('|').apply(
+    lambda x: x[0]
 )
 ```
 
-**Note:** `rename()` returns a modified DataFrame without changing the original by default. Use `inplace=True` for an in-place change.
+### 12. Changing Data Types
 
----
-
-## 4. Mathematical Methods
-
-These methods perform calculations on numeric columns by default.
+`astype()` converts a column to another data type.
 
 ```python
-students.sum()
-students.mean()
-students.median()
-students.max()
-students.min()
-students.std()
-students.var()
+ipl['ID'] = ipl['ID'].astype('int32')
+
+ipl['Season'] = ipl['Season'].astype('category')
+ipl['Team1'] = ipl['Team1'].astype('category')
+ipl['Team2'] = ipl['Team2'].astype('category')
 ```
 
-| Method | Purpose |
+- `int32`: 32-bit integer.
+- `category`: useful for columns containing a limited set of repeated values, such as team names.
+
+### Quick Revision
+
+| Concept | Key Point |
 |---|---|
-| `sum()` | Sum of values |
-| `mean()` | Average |
-| `median()` | Middle value |
-| `max()` | Maximum value |
-| `min()` | Minimum value |
-| `std()` | Standard deviation |
-| `var()` | Variance |
-
----
-
-## 5. Selecting Columns
-
-### Single Column
-
-```python
-movies['title_x']
-ipl['Venue']
-```
-
-Returns a **Series**.
-
-```python
-type(movies['title_x'])
-```
-
-### Multiple Columns — Fancy Indexing
-
-```python
-ipl[['Team1', 'Team2', 'WinningTeam', 'Player_of_Match']]
-```
-
-Returns a **DataFrame**.
-
-**Remember:** Single column uses one pair of brackets; multiple columns use a list inside double brackets.
-
----
-
-## 6. Selecting Rows
-
-### Using `iloc` — Integer Position
-
-Selects rows by their numerical positions.
-
-```python
-movies.iloc[0]          # First row
-movies.iloc[0:5]        # Rows at positions 0–4
-movies.iloc[5:16:2]     # Every second row from 5 to 15
-students.iloc[[0, 2, 3]]  # Selected positions
-```
-
-### Using `loc` — Index Labels
-
-Selects rows using index labels.
-
-```python
-student.loc['Ram']
-student.loc['Ram':'Mohan']
-student.loc[['Ram', 'Kiran', 'Mohan']]
-```
-
-**Important:** Label slicing with `loc` includes the ending label when it exists in the index. Position slicing with `iloc` excludes the ending position.
-
----
-
-## Quick Revision
-
-- **DataFrame:** 2-dimensional tabular structure.
-- **Series:** A single column selected using `df['column']`.
-- **Attributes:** `shape`, `dtypes`, `index`, `columns`, `values`.
-- **Inspection:** `head()`, `tail()`, `sample()`, `info()`, `describe()`.
-- **Data quality:** `isnull()`, `duplicated()`.
-- **Statistics:** `sum()`, `mean()`, `median()`, `max()`, `min()`, `std()`, `var()`.
-- **Selection:** `df['col']`, `df[['col1', 'col2']]`, `iloc`, `loc`.
+| DataFrame | Two-dimensional tabular structure |
+| `shape` | Rows and columns |
+| `iloc` | Select by position |
+| `loc` | Select by label |
+| Boolean filtering | Select rows matching conditions |
+| `str.split()` | Split text values |
+| `apply()` | Apply a function along a Series or DataFrame axis |
+| `dropna()` | Remove missing data |
+| `astype()` | Change data types |
+| `category` | Data type for categorical values |
 
 ---

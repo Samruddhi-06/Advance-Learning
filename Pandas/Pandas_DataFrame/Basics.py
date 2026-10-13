@@ -171,3 +171,112 @@ print()
 print(student.loc['Ram'])
 print(student.loc['Ram':'Mohan'])
 print(student.loc[['Ram', 'Kiran', 'Mohan']])
+
+
+# selecting both rows and cols
+
+# using iloc
+
+print(movies.iloc[0:3,0:3])
+
+# using loc
+
+print(movies.loc[0:3, 'title_x':'poster_path'])
+
+print()
+
+# Filtering a dataframe
+
+# find all the finale winners
+
+pd.set_option('display.max_columns', None)
+print(ipl.head(2))
+new_df = ipl[ipl['MatchNumber'] == 'Final']
+print(new_df[['Season', 'WinningTeam']])
+print()
+
+# how many superover finishes have occurred
+
+print(ipl[ipl['SuperOver'] == 'Y'].shape[0])
+print()
+
+# how many matches has csk won in kolkata
+
+print(ipl[(ipl['City'] == 'Kolkata') & (ipl['WinningTeam'] == 'Chennai Super Kings')].shape[0])
+print()
+
+# toss winner is match winner in percentage
+
+print((ipl[ipl['TossWinner'] == ipl['WinningTeam']].shape[0]/ipl.shape[0])*100)
+print()
+
+# movies with rating higher than 8 and votes > 10000
+
+pd.set_option('display.max_columns', None)
+print(movies.head(2))
+
+print(movies[(movies['imdb_rating'] > 8) & (movies['imdb_votes'] > 10000)].shape[0])
+print()
+
+# Action movies with rating higher than 7.5
+
+mask1 = movies['genres'].str.split('|').apply(lambda x: 'Action' in x)
+mask2 = movies['imdb_rating'] > 7.5
+print(movies[mask1 & mask2].shape[0])
+print()
+
+
+# write a function that returns  the track record of 2 teams against each other
+
+def track_records(ipl, team1, team2):
+    conditions = (
+        ((ipl['Team1'] == team1) & (ipl['Team2'] == team2)) |
+        ((ipl['Team1'] == team2) & (ipl['Team2'] == team1))
+    )
+
+    h2h_matches = ipl[conditions]
+
+    total_matches = h2h_matches.shape[0]
+
+    team1_wins = h2h_matches[h2h_matches['WinningTeam'] == team1].shape[0]
+    team2_wins = h2h_matches[h2h_matches['WinningTeam'] == team2].shape[0]
+
+    return {
+        'Total Matches': total_matches,
+        f'{team1} Wins': team1_wins,
+        f'{team2} Wins': team2_wins,
+    }
+
+csk_vs_mi = track_records(ipl, 'Chennai Super Kings', 'Mumbai Indians')
+print(csk_vs_mi)
+print()
+csk_vs_rcb = track_records(ipl, 'Chennai Super Kings', 'Royal Challengers Bangalore')
+print(csk_vs_rcb)
+
+# Adding new cols
+
+# completely new cols
+
+movies['Country'] = 'India'
+print((movies).head())
+
+# existing ols
+
+movies.dropna(subset=['actors'],inplace=True)
+
+movies['LeadActor'] = movies['actors'].str.split('|').apply(lambda x:x[0])
+print(movies.head())
+
+# Important data functions
+
+# astype
+
+print(ipl.info())
+ipl['ID'] = ipl['ID'].astype('int32')
+print(ipl.info())
+ipl['Season'] = ipl['Season'].astype('category')
+print(ipl.info())
+ipl['Team1'] = ipl['Team1'].astype('category')
+ipl['Team2'] = ipl['Team2'].astype('category')
+print(ipl.info())
+print()
