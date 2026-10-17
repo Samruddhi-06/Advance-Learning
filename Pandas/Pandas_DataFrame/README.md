@@ -1,231 +1,207 @@
-## Day 5 — Pandas DataFrame
+## Day 5 — Important Pandas DataFrame Methods
 
-### 1. What is a DataFrame?
+### 1. `value_counts()`
+Counts the frequency of unique values or rows.
 
-A **DataFrame** is a two-dimensional tabular data structure containing rows and columns. It can store different data types in different columns.
-
-### 2. Creating DataFrames
-
-**Using a 2D list**
 ```python
-students = pd.DataFrame(
-    [[100, 80, 10], [90, 70, 7]],
-    columns=['iq', 'marks', 'package']
+marks.value_counts()
+ipl['Player_of_Match'].value_counts()
+```
+
+### 2. Plotting with `value_counts()`
+Create a pie chart to visualize toss decisions.
+
+```python
+ipl['TossDecision'].value_counts().plot(kind='pie')
+```
+
+### 3. Counting Matches Played by Each Team
+Combine the counts from `Team1` and `Team2`.
+
+```python
+(ipl['Team1'].value_counts() +
+ ipl['Team2'].value_counts()).sort_values(ascending=False)
+```
+
+### 4. `sort_values()`
+Sort rows based on one or more columns.
+
+```python
+movies.sort_values('title_x')
+movies.sort_values('title_x', ascending=False)
+```
+
+**Important parameters:**
+- `ascending=False` → descending order
+- `na_position='first'` → place missing values first
+- `inplace=True` → modify the original DataFrame
+- Multiple columns → sort using more than one column
+
+```python
+movies.sort_values(['year_of_release', 'title_x'])
+movies.sort_values(
+    ['year_of_release', 'title_x'],
+    ascending=[True, False]
 )
 ```
 
-**Using a dictionary**
+### 5. `rank()`
+Assigns ranks to values in a column.
+
 ```python
-student = pd.DataFrame({
-    'name': ['Ram', 'Shyam'],
-    'marks': [80, 70]
+batsman['batting_rank'] = batsman['batsman_run'].rank(ascending=False)
+```
+
+Higher run totals receive better (lower numerical) ranks. By default, tied values receive their average rank.
+
+### 6. `sort_index()`
+Sorts rows using their index labels.
+
+```python
+movies.sort_index(ascending=False)
+```
+
+### 7. `set_index()`
+Sets an existing column as the DataFrame index.
+
+```python
+batsman.set_index('batter')
+```
+
+Use `inplace=True` to modify the original DataFrame instead of returning a new one.
+
+### 8. `reset_index()`
+Moves the existing index back into a regular column and creates a default integer index.
+
+```python
+batsman.reset_index()
+```
+
+You can combine methods to replace the index:
+
+```python
+batsman.reset_index().set_index('batting_rank')
+```
+
+### 9. Series to DataFrame
+Convert a Series into a DataFrame using `reset_index()`.
+
+```python
+marks_series.reset_index()
+```
+
+The result is a DataFrame containing the original index and values in separate columns.
+
+### 10. `rename()`
+Rename columns or index labels.
+
+```python
+movies.rename(columns={
+    'imdb_id': 'imdb',
+    'poster_path': 'link'
 })
 ```
 
-**Using CSV**
+Rename index labels using `index=`.
+
+### 11. `nunique()`
+Counts the number of distinct, non-missing values.
+
 ```python
-movies = pd.read_csv('movies.csv')
+ipl['Umpire1'].nunique()
 ```
 
-Set a column as the index:
+### 12. `isnull()` and `notnull()`
+Identify missing and non-missing values.
+
 ```python
-student.set_index('name', inplace=True)
+students.isnull()
+students.notnull()
 ```
 
-### 3. DataFrame Attributes
-
-| Attribute | Purpose |
-|---|---|
-| `df.shape` | Number of rows and columns |
-| `df.dtypes` | Data type of each column |
-| `df.index` | Row index labels |
-| `df.columns` | Column names |
-| `df.values` | Underlying data as an array |
-
-### 4. Important DataFrame Methods
-
-| Method | Purpose |
-|---|---|
-| `df.head()` | First 5 rows |
-| `df.tail()` | Last 5 rows |
-| `df.sample(5)` | 5 random rows |
-| `df.info()` | Column types, non-null counts and memory usage |
-| `df.describe()` | Summary statistics for numeric columns by default |
-| `df.isnull().sum()` | Missing values in each column |
-| `df.duplicated().sum()` | Number of duplicate rows |
-| `df.rename()` | Rename rows or columns |
-| `df.dropna()` | Remove missing data |
-
-Use `inplace=True` with supported methods when you want to modify the original DataFrame.
-
-### 5. Mathematical Methods
+### 13. `dropna()`
+Remove rows or columns containing missing values.
 
 ```python
-df.sum()
-df.mean()
-df.median()
-df.max()
-df.min()
-df.std()
-df.var()
+students.dropna(how='any')
+students.dropna(how='all')
+students.dropna(subset=['name'])
+students.dropna(subset=['name', 'college'])
 ```
 
-These calculate summary statistics, generally column-wise by default.
+- `how='any'` → drop a row if any selected value is missing.
+- `how='all'` → drop a row only if all selected values are missing.
+- `subset` → check only specified columns.
 
-### 6. Selecting Columns
+### 14. `fillna()`, `ffill()` and `bfill()`
+Handle missing values by replacing or propagating values.
 
-**Single column** — returns a Series:
 ```python
-movies['title_x']
+students['name'].fillna('unknown')
+students['name'].ffill()
+students['name'].bfill()
 ```
 
-**Multiple columns** — returns a DataFrame:
-```python
-ipl[['Team1', 'Team2', 'WinningTeam']]
-```
+- `fillna()` → replace missing values with a specified value.
+- `ffill()` → fill using the previous valid value.
+- `bfill()` → fill using the next valid value.
 
-### 7. Selecting Rows: `iloc` and `loc`
-
-**`iloc` — position-based selection**
-```python
-movies.iloc[0]          # First row
-movies.iloc[0:5]        # First five rows
-movies.iloc[0:3, 0:3]   # First 3 rows and columns
-movies.iloc[[0, 2, 3]]  # Selected row positions
-```
-
-**`loc` — label-based selection**
-```python
-student.loc['Ram']
-student.loc[['Ram', 'Shyam']]
-```
-
-Label-based slicing includes the ending label when it exists. Integer slicing with `iloc` excludes the ending position.
-
-### 8. Filtering DataFrames
-
-Filter rows using conditions.
-
-**Find final match winners**
-```python
-ipl[ipl['MatchNumber'] == 'Final'][['Season', 'WinningTeam']]
-```
-
-**Count Super Over matches**
-```python
-ipl[ipl['SuperOver'] == 'Y'].shape[0]
-```
-
-**CSK wins in Kolkata**
-```python
-ipl[
-    (ipl['City'] == 'Kolkata') &
-    (ipl['WinningTeam'] == 'Chennai Super Kings')
-].shape[0]
-```
-
-**Percentage of matches where toss winner also won**
-```python
-(ipl[ipl['TossWinner'] == ipl['WinningTeam']].shape[0]
- / ipl.shape[0]) * 100
-```
-
-**Movies with rating above 8 and more than 10,000 votes**
-```python
-movies[
-    (movies['imdb_rating'] > 8) &
-    (movies['imdb_votes'] > 10000)
-]
-```
-
-For multiple conditions:
-- `&` means AND
-- `|` means OR
-- Put each condition inside parentheses.
-
-### 9. Filtering Text Data
-
-Find Action movies with a rating above 7.5:
+### 15. `drop_duplicates()`
+Remove duplicate rows based on selected columns.
 
 ```python
-mask1 = movies['genres'].str.split('|').apply(
-    lambda x: 'Action' in x
-)
-mask2 = movies['imdb_rating'] > 7.5
-
-movies[mask1 & mask2]
-```
-
-### 10. Writing Functions with DataFrames
-
-A function can filter data and return useful results.
-
-Example: head-to-head IPL records.
-
-```python
-def track_records(ipl, team1, team2):
-    conditions = (
-        ((ipl['Team1'] == team1) & (ipl['Team2'] == team2)) |
-        ((ipl['Team1'] == team2) & (ipl['Team2'] == team1))
-    )
-
-    matches = ipl[conditions]
-
-    return {
-        'Total Matches': matches.shape[0],
-        f'{team1} Wins': (
-            matches[matches['WinningTeam'] == team1].shape[0]
-        ),
-        f'{team2} Wins': (
-            matches[matches['WinningTeam'] == team2].shape[0]
-        )
-    }
-```
-
-### 11. Adding New Columns
-
-**Add a constant column**
-```python
-movies['Country'] = 'India'
-```
-
-**Extract the lead actor**
-```python
-movies = movies.dropna(subset=['actors'])
-
-movies['LeadActor'] = movies['actors'].str.split('|').apply(
-    lambda x: x[0]
+ipl.drop_duplicates(
+    subset=['City', 'did_vk_play'],
+    keep='first'
 )
 ```
 
-### 12. Changing Data Types
+- `keep='first'` → retain the first matching row.
+- `keep='last'` → retain the last matching row.
 
-`astype()` converts a column to another data type.
+### 16. `drop()`
+Remove selected rows or columns.
 
 ```python
-ipl['ID'] = ipl['ID'].astype('int32')
-
-ipl['Season'] = ipl['Season'].astype('category')
-ipl['Team1'] = ipl['Team1'].astype('category')
-ipl['Team2'] = ipl['Team2'].astype('category')
+students.drop(columns=['branch', 'cgpa'])
+students.drop(index=[0, 5])
 ```
 
-- `int32`: 32-bit integer.
-- `category`: useful for columns containing a limited set of repeated values, such as team names.
+### 17. `apply()`
+Apply a custom function to rows or columns.
+
+```python
+points_df['Distance'] = points_df.apply(euclidean, axis=1)
+```
+
+- `axis=1` → apply the function row-wise.
+- `axis=0` → apply the function column-wise (default).
+
+**Example:** Calculate Euclidean distance between two points:
+
+\[
+d=\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}
+\]
+
+---
 
 ### Quick Revision
 
-| Concept | Key Point |
+| Method | Purpose |
 |---|---|
-| DataFrame | Two-dimensional tabular structure |
-| `shape` | Rows and columns |
-| `iloc` | Select by position |
-| `loc` | Select by label |
-| Boolean filtering | Select rows matching conditions |
-| `str.split()` | Split text values |
-| `apply()` | Apply a function along a Series or DataFrame axis |
+| `value_counts()` | Count frequencies |
+| `sort_values()` | Sort by column values |
+| `rank()` | Assign ranks |
+| `sort_index()` | Sort by index |
+| `set_index()` | Set a column as index |
+| `reset_index()` | Restore the index as a column |
+| `rename()` | Rename columns or index labels |
+| `nunique()` | Count distinct values |
+| `isnull()` / `notnull()` | Detect missing/non-missing values |
 | `dropna()` | Remove missing data |
-| `astype()` | Change data types |
-| `category` | Data type for categorical values |
+| `fillna()` / `ffill()` / `bfill()` | Fill missing data |
+| `drop_duplicates()` | Remove duplicate rows |
+| `drop()` | Remove rows or columns |
+| `apply()` | Apply a custom function |
 
 ---
